@@ -3,7 +3,7 @@ model User {
   name         String
   email        String      @unique
   password     String
-  phoneNumber  String      @unique
+  phoneNumber  String      @unique 
   profileImage String?
 
   role         Role        @default(TENANT)
