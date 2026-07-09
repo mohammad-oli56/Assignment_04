@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken"
 
 
 const createUserIntoDB = async (payload: IRegisterUser) => {
+  
   const { name, email, phoneNumber, password, role } = payload;
 
   // Check email already exists
@@ -93,6 +94,7 @@ const loginuserBydb = async (payload: ILogin) => {
  
 const jwtPayload = {
   id: fintuserinbd.id,
+  name : fintuserinbd.name,
   email: fintuserinbd.email,
   phoneNumber: fintuserinbd.phoneNumber,
   role: fintuserinbd.role,
@@ -112,9 +114,26 @@ return token
 }
 
 
+const findMYAccountINdb = async ( id : any)=>{
+
+ 
+  const user = await prisma.user.findUnique({
+    where:{
+      id
+    },omit:{
+      password:true
+    }
+  })
+
+
+  return user
+}
+
+
 
 
 export const authService = {
   createUserIntoDB,
-  loginuserBydb
+  loginuserBydb,
+  findMYAccountINdb
 };

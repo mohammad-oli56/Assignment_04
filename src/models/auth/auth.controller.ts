@@ -1,25 +1,32 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service";
+import { catchasync } from "../../utils/catchasync";
+import { sendResponse } from "../../utils/sendResponse";
 
-const createUser = async (req: Request, res: Response) => {
-  try {
+
+
+
+
+
+const createUser =await catchasync(
+  async (req: Request, res: Response, next: NextFunction) => {
+console.log(req.body)
+
     const result = await authService.createUserIntoDB(req.body);
 
-    res.status(201).json({
+    sendResponse(res, {
       success: true,
+      statusCode: 200,
       message: "User registered successfully",
       data: result,
     });
-  } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: error.message || "Something went wrong",
-      data: null,
-    });
   }
-};
+);
 
-const loginUser = async (req: Request, res: Response) => {
+
+
+
+const loginUser =  async (req: Request, res: Response) => {
   try {
     const result = await authService.loginuserBydb(req.body);
 
@@ -46,7 +53,22 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+
+const myAccount = async(req: Request, res: Response)=>{
+  
+ const profile = await authService.findMYAccountINdb(req.user?.id as string)
+  
+ sendResponse(res,{
+  success:true,
+  statusCode:200,
+  message:"found user successfully",
+  data :{profile}
+ })
+
+}
+
 export const authController = {
   createUser,
-  loginUser
+  loginUser,
+  myAccount
 };
