@@ -1,0 +1,106 @@
+import { NextFunction, Request, Response } from "express";
+import { catchasync } from "../../utils/catchasync";
+import { Propertyservice } from "./property.service";
+import { sendResponse } from "../../utils/sendResponse";
+
+
+//public
+//Done
+const getAllPropertyController = await catchasync(async (req: Request, res: Response, nest: NextFunction) =>{
+    
+    const result = await Propertyservice.getAllPropertyinDB(req.query)
+
+    sendResponse(res,{
+        success:true,
+        statusCode:200,
+        message:"property crate successfully",
+        data:{result}
+    })
+})
+
+//Done
+const getSinglePropertyController = await catchasync(async (req: Request, res: Response, nest: NextFunction) =>{
+    const result = await Propertyservice.getSinglePropertyinDB(req.params.id as string)
+
+     sendResponse(res,{
+        success:true,
+        statusCode:200,
+        message:"property crate successfully",
+        data:{result}
+    })
+
+})
+
+
+
+
+//private
+//Done
+const createPropertycontroller = await catchasync(async (req: Request, res: Response, nest: NextFunction) => {
+
+
+    const result = await Propertyservice.createPropertyInDB(req.body,
+        req.user?.id as string)
+
+
+    sendResponse(res,{
+        success:true,
+        statusCode:200,
+        message:"property crate successfully",
+        data:{result}
+    })
+
+
+})
+//Done
+const updatePropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
+    
+  const result = await Propertyservice.updatePropertyinDB(
+  req.params?.id as string,
+  req.user?.id as string,
+  req.body
+);
+
+sendResponse(res,{
+    success:true,
+    statusCode:200,
+    message:"update successfully",
+    data:{result}
+})
+
+})
+//Done
+const deletePropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
+      const result = await Propertyservice.deletePropertyinDB(
+  req.params?.id as string,
+  req.user?.id as string,
+  
+);
+
+sendResponse(res,{
+    success:true,
+    statusCode:200,
+    message:"delete successfully",
+    data:null
+})
+})
+//NOT Done
+const getAllRequestPropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
+
+})
+//NOT Done
+const updateRequestPropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
+
+})
+
+
+
+export const PropertyController = {
+    createPropertycontroller,
+    updatePropertyController,
+    deletePropertyController,
+    getAllRequestPropertyController,
+    updateRequestPropertyController,
+    getAllPropertyController,
+    getSinglePropertyController
+}
