@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser'
 import { authRouts } from './models/auth/auth.router'
 import { Categoryrouter } from './models/Category/category.router'
 import { PropertyRouter } from './models/Property/Propertyrouter'
+import { RentalController } from './models/Rental/Rental.controller'
+import { RentalROuter } from './models/Rental/Rental.reoter'
 
 const app :Application = express()
 
@@ -28,5 +30,6 @@ app.use("/api/auth",authRouts)
 app.use("/api/categories",Categoryrouter)
 app.use("/api/landlord",PropertyRouter)
 app.use("/api/properties",PropertyRouter)
+app.use("/api/rentals",RentalROuter)
 
 export default app;
