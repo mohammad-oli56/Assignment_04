@@ -7,6 +7,7 @@ import { Categoryrouter } from './models/Category/category.router'
 import { PropertyRouter } from './models/Property/Propertyrouter'
 import { RentalController } from './models/Rental/Rental.controller'
 import { RentalROuter } from './models/Rental/Rental.reoter'
+import globalErrorHandler from './Middleware/globalErrorHandler'
 
 const app :Application = express()
 
@@ -31,5 +32,8 @@ app.use("/api/categories",Categoryrouter)
 app.use("/api/landlord",PropertyRouter)
 app.use("/api/properties",PropertyRouter)
 app.use("/api/rentals",RentalROuter)
+
+
+// app.use(globalErrorHandler);
 
 export default app;
