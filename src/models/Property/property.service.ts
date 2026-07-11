@@ -217,10 +217,14 @@ const deletePropertyinDB = async (
 
 
 
+
+
+
 export const Propertyservice = {
     createPropertyInDB,
     updatePropertyinDB,
     deletePropertyinDB,
     getAllPropertyinDB,
-    getSinglePropertyinDB
+    getSinglePropertyinDB,
+   
 }

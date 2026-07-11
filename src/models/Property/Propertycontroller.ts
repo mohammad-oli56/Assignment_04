@@ -84,14 +84,10 @@ sendResponse(res,{
     data:null
 })
 })
-//NOT Done
-const getAllRequestPropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
 
-})
-//NOT Done
-const updateRequestPropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
 
-})
+
+
 
 
 
@@ -99,8 +95,6 @@ export const PropertyController = {
     createPropertycontroller,
     updatePropertyController,
     deletePropertyController,
-    getAllRequestPropertyController,
-    updateRequestPropertyController,
     getAllPropertyController,
     getSinglePropertyController
 }
