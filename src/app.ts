@@ -9,6 +9,7 @@ import { RentalController } from './models/Rental/Rental.controller'
 import { RentalROuter } from './models/Rental/Rental.reoter'
 import globalErrorHandler from './Middleware/globalErrorHandler'
 import { landlordRouter } from './models/landlordRequest/landlordRequest.router'
+import { AdminRouter } from './models/Admin/admin.router'
 
 const app :Application = express()
 
@@ -30,11 +31,10 @@ app.get("/",(req : Request,res : Response)=>{
 
 app.use("/api/auth",authRouts)
 app.use("/api/categories",Categoryrouter)
-
 app.use("/api/landlord",landlordRouter)
-
 app.use("/api/properties",PropertyRouter)
 app.use("/api/rentals",RentalROuter)
+app.use("/api/admin",AdminRouter)
 
 
 // app.use(globalErrorHandler);
