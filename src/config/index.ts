@@ -9,5 +9,7 @@ export default {
     APP_URL : process.env.APP_URL,
     BCRYPT_SALT_ROUNDS : process.env.BCRYPT_SALT_ROUNDS,
     JWT_ACCESS_SECRET : process.env.JWT_ACCESS_SECRET!,
-    JWT_EXPIRES_IN : process.env.JWT_EXPIRES_IN!
+    JWT_EXPIRES_IN : process.env.JWT_EXPIRES_IN!,
+    STORE_ID : process.env.STORE_ID!,
+    STORE_PASSWORD : process.env.STORE_PASSWORD!
 };

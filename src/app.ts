@@ -10,6 +10,7 @@ import { RentalROuter } from './models/Rental/Rental.reoter'
 import globalErrorHandler from './Middleware/globalErrorHandler'
 import { landlordRouter } from './models/landlordRequest/landlordRequest.router'
 import { AdminRouter } from './models/Admin/admin.router'
+import { PaymentRouter } from './models/Payment/payment.router'
 
 const app :Application = express()
 
@@ -35,6 +36,7 @@ app.use("/api/landlord",landlordRouter)
 app.use("/api/properties",PropertyRouter)
 app.use("/api/rentals",RentalROuter)
 app.use("/api/admin",AdminRouter)
+app.use("/api/payments",PaymentRouter)
 
 
 // app.use(globalErrorHandler);
