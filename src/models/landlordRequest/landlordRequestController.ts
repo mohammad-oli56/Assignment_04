@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express"
-import { catchasync } from "../../utils/catchasync"
+import { catchAsync, } from "../../utils/catchasync"
 import { landlordRequestService } from "./landlordRequestService";
 import { sendResponse } from "../../utils/sendResponse";
 
-const landlordRequestPropertyController = await catchasync(async (req: Request, res: Response, nest: NextFunction) => {
+const landlordRequestPropertyController =  catchAsync(async (req: Request, res: Response, nest: NextFunction) => {
 
 
 
@@ -19,7 +19,7 @@ const landlordRequestPropertyController = await catchasync(async (req: Request, 
 })
 
 
-const updateRequestPropertyController = await catchasync(async (req: Request, res: Response, nest: NextFunction) => {
+const updateRequestPropertyController =  catchAsync(async (req: Request, res: Response, nest: NextFunction) => {
    
     console.log( req.params.id)
     console.log(req.user?.id)

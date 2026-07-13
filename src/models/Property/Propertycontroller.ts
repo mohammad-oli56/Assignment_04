@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { catchasync } from "../../utils/catchasync";
+import { catchAsync } from "../../utils/catchasync";
 import { Propertyservice } from "./property.service";
 import { sendResponse } from "../../utils/sendResponse";
 
 
 //public
 //Done
-const getAllPropertyController = await catchasync(async (req: Request, res: Response, nest: NextFunction) =>{
+const getAllPropertyController =  catchAsync(async (req: Request, res: Response, nest: NextFunction) =>{
     
     const result = await Propertyservice.getAllPropertyinDB(req.query)
 
@@ -19,7 +19,7 @@ const getAllPropertyController = await catchasync(async (req: Request, res: Resp
 })
 
 //Done
-const getSinglePropertyController = await catchasync(async (req: Request, res: Response, nest: NextFunction) =>{
+const getSinglePropertyController =  catchAsync(async (req: Request, res: Response, nest: NextFunction) =>{
     const result = await Propertyservice.getSinglePropertyinDB(req.params.id as string)
 
      sendResponse(res,{
@@ -36,7 +36,7 @@ const getSinglePropertyController = await catchasync(async (req: Request, res: R
 
 //private
 //Done
-const createPropertycontroller = await catchasync(async (req: Request, res: Response, nest: NextFunction) => {
+const createPropertycontroller =  catchAsync(async (req: Request, res: Response, nest: NextFunction) => {
 
 
     const result = await Propertyservice.createPropertyInDB(req.body,
@@ -53,7 +53,7 @@ const createPropertycontroller = await catchasync(async (req: Request, res: Resp
 
 })
 //Done
-const updatePropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
+const updatePropertyController =  catchAsync(async(req: Request, res: Response, nest: NextFunction) =>{
     
   const result = await Propertyservice.updatePropertyinDB(
   req.params?.id as string,
@@ -70,7 +70,7 @@ sendResponse(res,{
 
 })
 //Done
-const deletePropertyController = await catchasync(async(req: Request, res: Response, nest: NextFunction) =>{
+const deletePropertyController =  catchAsync(async(req: Request, res: Response, nest: NextFunction) =>{
       const result = await Propertyservice.deletePropertyinDB(
   req.params?.id as string,
   req.user?.id as string,

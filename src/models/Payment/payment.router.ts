@@ -7,7 +7,7 @@ const router = Router()
 
 router.post("/create", auth(Role.TENANT),PaymentController.paymentCreate)
 router.post("/confirm",PaymentController.paymentconfirm)
-router.get("/",PaymentController.paymentHistory)
-router.get("/:id",PaymentController.paymentDetails)
+router.get("/",auth(Role.TENANT),PaymentController.paymentHistory)
+router.get("/:id",auth(Role.TENANT),PaymentController.paymentDetails)
 
 export const PaymentRouter = router

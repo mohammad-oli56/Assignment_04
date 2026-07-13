@@ -1,40 +1,64 @@
 import { NextFunction, Request, Response } from "express";
-import { catchasync } from "../../utils/catchasync";
+import { catchAsync, } from "../../utils/catchasync";
 import { PaymentService } from "./payment.service";
 import { ItenantDetails } from "./paymentInterface";
 import { sendResponse } from "../../utils/sendResponse";
 
-const paymentCreate = await catchasync(async (req: Request, res: Response, next: NextFunction) => {
-   
-   
+const paymentCreate = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+
     const result = await PaymentService.createPaymentInDB(
         req.user as ItenantDetails,
         req.body.rentalRequestId
     );
 
-sendResponse(res,{
-    success:true,
-    statusCode:200,
-    message:"payment create",
-    data:{result}
-})
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "payment create",
+        data: { result }
+    })
 
 
 })
 
 
-const paymentconfirm = await catchasync(async (req: Request, res: Response, next: NextFunction) => {
+const paymentconfirm = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
 })
 
 
 
-const paymentHistory = await catchasync(async (req: Request, res: Response, next: NextFunction) => {
+const paymentHistory = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+   
+
+
+    const result = await PaymentService.getAllPaymentHistoryDB(req.user?.id as string,);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "all Payment History",
+        data: { result }
+    })
+
 
 })
 
 
-const paymentDetails = await catchasync(async (req: Request, res: Response, next: NextFunction) => {
+const paymentDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    console.log(req.params.id)
+    console.log(req.user?.id)
+
+     const result = await PaymentService.getSinglePaymentDetails( req.params.id as string,req.user?.id as string);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "all Payment History",
+        data: { result }
+    })
 
 })
 

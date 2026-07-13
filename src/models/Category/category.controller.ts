@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express"
 import { categoryService } from "./category.service"
 import { sendResponse } from "../../utils/sendResponse"
-import { catchasync } from "../../utils/catchasync"
+import { catchAsync } from "../../utils/catchasync"
+
 
 
 
@@ -19,7 +20,7 @@ import { catchasync } from "../../utils/catchasync"
 //     })
 // }
 
-const creteCategoryFromCotroller = await catchasync(async (req: Request, res: Response, next: NextFunction) => {
+const creteCategoryFromCotroller =  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const result = await categoryService.createCategoryINdb(req.body)
 
 
@@ -31,7 +32,7 @@ const creteCategoryFromCotroller = await catchasync(async (req: Request, res: Re
     })
 })
 
-const getAllCategoryController = await catchasync(async(req:Request,res:Response,next:NextFunction)=>{
+const getAllCategoryController =  catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
     const result = await categoryService.getAllCategoryFromDB()
       sendResponse(res, {
         success: true,

@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { catchasync } from "../../utils/catchasync";
+
 import { AdminService } from "./admin.service";
 import { sendResponse } from "../../utils/sendResponse";
+import { catchAsync } from "../../utils/catchasync";
 
-const Get_all_users = await catchasync(async(req:Request,res:Response,next :NextFunction)=>{
+const Get_all_users = catchAsync(async(req:Request,res:Response,next :NextFunction)=>{
    
     console.log(req.user)
 
@@ -19,7 +20,7 @@ const Get_all_users = await catchasync(async(req:Request,res:Response,next :Next
 })
 
 
-const Update_user_status = await catchasync(async(req:Request,res:Response,next :NextFunction)=>{
+const Update_user_status =  catchAsync(async(req:Request,res:Response,next :NextFunction)=>{
     // console.log()
 
      const result = await AdminService.updateUserStatusInDB(req.params?.id as string,req.body,req.user?.id as string)
@@ -34,7 +35,7 @@ const Update_user_status = await catchasync(async(req:Request,res:Response,next 
 })
 
 
-const Get_all_properties = await catchasync(async(req:Request,res:Response,next :NextFunction)=>{
+const Get_all_properties =  catchAsync(async(req:Request,res:Response,next :NextFunction)=>{
 
     const result = await AdminService.getAllPropertiesInDB()
 
@@ -48,7 +49,7 @@ const Get_all_properties = await catchasync(async(req:Request,res:Response,next 
 })
 
 
-const 	Get_all_rental_requests = await catchasync(async(req:Request,res:Response,next :NextFunction)=>{
+const 	Get_all_rental_requests =  catchAsync(async(req:Request,res:Response,next :NextFunction)=>{
     const result = await AdminService.getAllRentalsInDB()
 
        sendResponse(res, {

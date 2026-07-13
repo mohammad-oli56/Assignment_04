@@ -1,14 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service";
-import { catchasync } from "../../utils/catchasync";
+
 import { sendResponse } from "../../utils/sendResponse";
+import { catchAsync } from "../../utils/catchasync";
 
-
-
-
-
-
-const createUser =await catchasync(
+const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
 // console.log(req.body)
 

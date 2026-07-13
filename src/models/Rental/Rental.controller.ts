@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { catchasync } from "../../utils/catchasync";
+import { catchAsync} from "../../utils/catchasync";
 import { RentalService } from "./Rental.service";
 import { sendResponse } from "../../utils/sendResponse";
 
-const createRental = await catchasync(async(req:Request,res:Response,next:NextFunction)=>{
+const createRental =  catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
 
     const result = await RentalService.createRentalinDB(req.user?.id as string,req.body)
 
@@ -15,7 +15,7 @@ const createRental = await catchasync(async(req:Request,res:Response,next:NextFu
     })
 })
 
-const getMyRentals = await catchasync(async(req:Request,res:Response,next:NextFunction)=>{
+const getMyRentals =  catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
      const result = await RentalService.getAllRentalinDB(req.user?.id as string)
 
     sendResponse(res,{
@@ -27,7 +27,7 @@ const getMyRentals = await catchasync(async(req:Request,res:Response,next:NextFu
 })
 
 
-const getSingleRental = await catchasync(async(req:Request,res:Response,next:NextFunction)=>{
+const getSingleRental =  catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
 
     // console.log(req.params.id)
     // console.log(req.user?.id)

@@ -27,7 +27,7 @@ const createPaymentInDB = async (
     throw new Error("Rental request not found");
   }
 
-  
+
   if (rentalRequest.status !== RentalStatus.APPROVED) {
     throw new Error("Rental request is not approved yet");
   }
@@ -114,6 +114,52 @@ const createPaymentInDB = async (
   };
 };
 
+
+
+const getAllPaymentHistoryDB = async (tenantId:string)=>{
+
+ const payments = await prisma.payment.findMany({
+   where:{
+     rentalRequest:{
+       tenantId: tenantId
+     }
+   }
+ });
+
+ if(payments.length === 0){
+   throw new Error("Payment history not found for this tenant.");
+ }
+
+ return payments;
+}
+
+
+const getSinglePaymentDetails = async (
+  paymentId: string,
+  tenantId: string
+) => {
+
+  const paymentDetails = await prisma.payment.findFirst({
+    where: {
+      id: paymentId,
+      rentalRequest: {
+        tenantId: tenantId
+      }
+    },
+    include: {
+      rentalRequest: true
+    }
+  });
+
+  if (!paymentDetails) {
+    throw new Error("Payment not found for this tenant");
+  }
+
+  return paymentDetails;
+};
+
 export const PaymentService = {
   createPaymentInDB,
+  getAllPaymentHistoryDB,
+  getSinglePaymentDetails
 };
