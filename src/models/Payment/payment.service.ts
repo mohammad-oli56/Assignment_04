@@ -1,41 +1,119 @@
-// import config from "../../config";
+import axios from "axios";
+import crypto from "crypto";
+import { prisma } from "../../lib/prisma";
+import config from "../../config";
+import { ItenantDetails } from "./paymentInterface";
+import { PaymentProvider, PaymentStatus, RentalStatus } from "../../../generated/prisma/enums";
 
 
-// const createPaymentInDB = async (tenantId: string,
-//     rentalRequestId: string) => {
+const createPaymentInDB = async (
+  tenantDetails: ItenantDetails,
+  rentalRequestId: string
+) => {
+  // 1. Find Rental Request
+  const rentalRequest = await prisma.rentalRequest.findFirst({
+    where: {
+      id: rentalRequestId,
+      tenantId: tenantDetails.id,
+    },
+    include: {
+      property: true,
+    },
+  });
 
+  console.log(rentalRequest)
 
-//     const paymentData = {
-//     //     store_id: config.STORE_ID,
-//     //     store_passwd: config.STORE_PASSWORD,
+  if (!rentalRequest) {
+    throw new Error("Rental request not found");
+  }
 
-//     //     total_amount: property.price,
-//     //     currency: "BDT",
+  
+  if (rentalRequest.status !== RentalStatus.APPROVED) {
+    throw new Error("Rental request is not approved yet");
+  }
 
-//     //     tran_id: payment.id,
+  // 3. Prevent duplicate payment
+  const existingPayment = await prisma.payment.findUnique({
+    where: {
+      rentalRequestId,
+    },
+  });
 
-//     //     success_url: `${config.BACKEND_URL}/api/payments/confirm`,
-//     //     fail_url: `${config.BACKEND_URL}/api/payments/fail`,
-//     //     cancel_url: `${config.BACKEND_URL}/api/payments/cancel`,
+  if (existingPayment) {
+    throw new Error("Payment already exists for this rental request");
+  }
 
-//     //     cus_name: tenant.name,
-//     //     cus_email: tenant.email,
-//     //     cus_phone: tenant.phoneNumber,
+  // 4. Generate transaction id
+  const tranId = crypto.randomUUID();
 
-//     //     cus_add1: "Dhaka",
-//     //     cus_city: "Dhaka",
-//     //     cus_country: "Bangladesh",
+  // 5. Prepare SSLCommerz data
+  const paymentData = {
+    store_id: config.STORE_ID,
+    store_passwd: config.STORE_PASSWORD,
 
-//     //     ship_name: tenant.name,
-//     //     ship_add1: "Dhaka",
-//     //     ship_city: "Dhaka",
-//     //     ship_country: "Bangladesh",
+    total_amount: rentalRequest.property.price,
+    currency: "BDT",
+    tran_id: tranId,
 
-//     //     value_a: rentalRequest.id,
-//     //     value_b: tenant.id,
-//     //     value_c: property.id,
-//     //     value_d: landlord.id,
-//     // };
-// }
+    product_category: "Rental Property",
 
+    success_url: `${config.APP_URL}/api/payments/confirm`,
+    fail_url: `${config.APP_URL}/api/payments/fail`,
+    cancel_url: `${config.APP_URL}/api/payments/cancel`,
 
+    cus_name: tenantDetails.name,
+    cus_email: tenantDetails.email,
+    cus_phone: tenantDetails.phoneNumber,
+
+    cus_add1: "Dhaka",
+    cus_city: "Dhaka",
+    cus_country: "Bangladesh",
+
+    ship_name: tenantDetails.name,
+    ship_add1: "Dhaka",
+    ship_city: "Dhaka",
+    ship_country: "Bangladesh",
+  };
+
+  const formData = new URLSearchParams();
+
+  Object.entries(paymentData).forEach(([key, value]) => {
+    formData.append(key, String(value));
+  });
+
+  // 6. Create SSL Session
+  const response = await axios.post(
+    "https://sandbox.sslcommerz.com/gwprocess/v4/api.php",
+    formData,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+
+  // 7. Check SSL response
+  if (response.data.status !== "SUCCESS") {
+    throw new Error("Failed to create payment session");
+  }
+
+  // 8. Save payment
+  await prisma.payment.create({
+    data: {
+      rentalRequestId,
+      transactionId: tranId,
+      amount: rentalRequest.property.price,
+      provider: PaymentProvider.SSLCOMMERZ,
+      status: PaymentStatus.PENDING,
+    },
+  });
+
+  // 9. Return payment url
+  return {
+    GatewayPageURL: response.data.GatewayPageURL,
+  };
+};
+
+export const PaymentService = {
+  createPaymentInDB,
+};
