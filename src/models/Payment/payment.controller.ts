@@ -23,10 +23,23 @@ const paymentCreate = catchAsync(async (req: Request, res: Response, next: NextF
 })
 
 
-const paymentconfirm = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const paymentconfirm = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log("BODY:", req.body);
 
-})
+    const result = await PaymentService.paymentConfirmInDB(req.body);
 
+    return res.json({
+      success: true,
+      message: "Payment Confirmed",
+      data: result,
+       method: req.method,
+      body: req.body,
+      query: req.query,
+      headers: req.headers,
+    });
+  }
+);
 
 
 const paymentHistory = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
