@@ -8,10 +8,14 @@ import jwt from "jsonwebtoken"
 
 
 const createUserIntoDB = async (payload: IRegisterUser) => {
-  
-  const { name, email, phoneNumber, password, role } = payload;
 
-  // Check email already exists
+   if ("role" in payload) {
+    throw new Error("You are not allowed to provide a role during registration.");
+  }
+  
+  const { name, email, phoneNumber, password } = payload;
+
+ 
   const isUserExists = await prisma.user.findUnique({
     where: {
       email,
@@ -22,7 +26,7 @@ const createUserIntoDB = async (payload: IRegisterUser) => {
     throw new Error("Email already exists");
   }
 
-  // Validate phone number
+  
   const isPhoneNumberValid = (phone: string): boolean => {
     return /^01\d{9}$/.test(phone);
   };
@@ -49,7 +53,7 @@ const createUserIntoDB = async (payload: IRegisterUser) => {
       email,
       phoneNumber,
       password: hashedPassword,
-      role,
+     
     },
     omit: {
       password: true,
