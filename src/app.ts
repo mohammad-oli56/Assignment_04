@@ -34,8 +34,19 @@ app.get("/",(req : Request,res : Response)=>{
 
 app.use("/api/auth",authRouts)
 app.use("/api/categories",Categoryrouter)
-app.use("/api/landlord",landlordRouter)
+
+
+
+app.use("/api/landlord",landlordRouter) 
+
+
+
+
 app.use("/api/properties",PropertyRouter)
+
+
+
+
 app.use("/api/rentals",RentalROuter)
 app.use("/api/admin",AdminRouter)
 app.use("/api/payments",PaymentRouter)
