@@ -62,7 +62,7 @@ const landlordRequestPropertyController =  catchAsync(async (req: Request, res: 
     sendResponse(res, {
         success: true,
         statusCode: 200,
-        message: "property crate successfully",
+        message: "All property get request",
         data: { result }
     })
 
@@ -84,7 +84,7 @@ const updateRequestPropertyController =  catchAsync(async (req: Request, res: Re
        sendResponse(res, {
         success: true,
         statusCode: 200,
-        message: "property crate successfully",
+        message: "property update successfully",
         data: { result }
     })
 

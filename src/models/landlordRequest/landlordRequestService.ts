@@ -1,3 +1,4 @@
+import { RentalStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { IProperty, IupdadeProperty } from "../Property/propertyInterface";
 
@@ -146,33 +147,35 @@ const deletePropertyinDB = async (
 
 
 const getAllRequestPropertyInDB = async (landlordId: string) => {
-
-    const result = await prisma.rentalRequest.findMany({
-        where: {
-            property: {
-                landlordId,
-            },
+  const result = await prisma.rentalRequest.findMany({
+    where: {
+      status: RentalStatus.PENDING,
+      property: {
+        landlordId,
+      },
+    },
+    include: {
+      tenant: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phoneNumber: true,
         },
-        include: {
-            tenant: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    phoneNumber: true,
-                },
-            },
-            property: true,
-        },
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
+      },
+      property: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-    return result
+  if (result.length === 0) {
+    throw new Error("not Available Request. Right now");
+  }
 
-
-}
+  return result;
+};
 
 
 const updateRequestPropertyInDB = async (rentalId:string,landlordId:string,payload:any) => {
